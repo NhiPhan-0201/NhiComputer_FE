@@ -1,0 +1,37 @@
+<!-- chat.component.html -->
+<div class="chat-container">
+  <div class="chat-header">
+    <h2>Chat Hỗ Trợ</h2>
+  </div>
+
+  <div class="messages-container" #messageContainer>
+    <div *ngFor="let message of messages"
+         [ngClass]="{'message': true, 'user-message': message.type === 'user', 'bot-message': message.type === 'bot'}">
+      <div class="message-content">
+        {{ message.content }}
+      </div>
+      <div class="message-time" *ngIf="message.timestamp">
+        {{ message.timestamp | date:'HH:mm' }}
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="bot-message loading">
+      <div class="typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <form (ngSubmit)="sendMessage()" class="input-container">
+    <input type="text"
+           [(ngModel)]="newMessage"
+           name="newMessage"
+           [disabled]="isLoading"
+           placeholder="Nhập tin nhắn của bạn...">
+    <button type="submit"
+            [disabled]="!newMessage.trim() || isLoading">
+      {{ isLoading ? 'Đang gửi...' : 'Gửi' }}
+    </button>
+  </form>
+</div>

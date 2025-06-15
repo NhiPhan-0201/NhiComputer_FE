@@ -1,0 +1,100 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header border-0">
+    <h2 class="modal-title fw-bold text-primary">Chỉnh sửa thông tin cá nhân</h2>
+    <button type="button" class="btn-close" (click)="d('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="postForm" class="row p-4">
+      <!-- Hidden fields -->
+      <input type="hidden" formControlName="userId">
+      <input type="hidden" formControlName="registerDate">
+      <input type="hidden" formControlName="status">
+      <input type="hidden" formControlName="password">
+      <input type="hidden" formControlName="role">
+
+      <!-- Left Column -->
+      <div class="col-md-6">
+        <div class="form-group mb-4">
+          <label for="emailE" class="form-label fw-medium">Email</label>
+          <input readonly
+            [ngClass]="{'is-invalid': postForm.get('email')?.touched && postForm.get('email')?.invalid}"
+            type="email" name="emailE" class="form-control shadow-sm rounded-pill" id="emailE"
+            placeholder="Email của bạn" formControlName="email">
+          <small class="text-danger mt-1 d-block"
+            *ngIf="postForm.get('email')?.invalid && postForm.get('email')?.touched">
+            Email không hợp lệ</small>
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="nameE" class="form-label fw-medium">Họ và tên</label>
+          <input
+            [ngClass]="{'is-invalid': postForm.get('name')?.touched && postForm.get('name')?.invalid}"
+            type="text" name="nameE" class="form-control shadow-sm rounded-pill" id="nameE"
+            placeholder="Nguyễn Văn A" formControlName="name">
+          <small class="text-danger mt-1 d-block"
+            *ngIf="postForm.get('name')?.invalid && postForm.get('name')?.touched">
+            Tên không hợp lệ</small>
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="addressE" class="form-label fw-medium">Địa chỉ</label>
+          <input
+            [ngClass]="{'is-invalid': postForm.get('address')?.touched && postForm.get('address')?.invalid}"
+            type="text" name="addressE" class="form-control shadow-sm rounded-pill" id="addressE"
+            placeholder="Ví dụ: Hà Nội" formControlName="address">
+          <small class="text-danger mt-1 d-block"
+            *ngIf="postForm.get('address')?.invalid && postForm.get('address')?.touched">
+            Địa chỉ không hợp lệ</small>
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="phoneE" class="form-label fw-medium">Số điện thoại</label>
+          <input
+            [ngClass]="{'is-invalid': postForm.get('phone')?.touched && postForm.get('phone')?.invalid}"
+            type="text" name="phoneE" class="form-control shadow-sm rounded-pill" id="phoneE"
+            placeholder="Ví dụ: 0123 456 789" formControlName="phone">
+          <small class="text-danger mt-1 d-block"
+            *ngIf="postForm.get('phone')?.invalid && postForm.get('phone')?.touched">
+            Số điện thoại không hợp lệ</small>
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="genderE" class="form-label fw-medium">Giới tính</label>
+          <select class="form-select shadow-sm rounded-pill" id="genderE" name="genderE" formControlName="gender">
+            <option value="true">Nam</option>
+            <option value="false">Nữ</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Right Column (Avatar) -->
+      <div class="col-md-6 text-center">
+        <div class="avatar-section">
+          <label class="form-label fw-medium">Ảnh đại diện</label>
+          <div class="avatar-preview mb-4">
+            <div class="position-relative d-inline-block">
+              <img [src]="url" class="img-fluid rounded-circle shadow-lg" style="width: 180px; height: 180px; object-fit: cover;" id="blah">
+              <div class="position-absolute bottom-0 end-0 bg-primary rounded-circle p-2 shadow-sm">
+                <i class="fas fa-camera text-white"></i>
+              </div>
+            </div>
+          </div>
+          <div class="input-group w-75 mx-auto">
+            <input type="file" accept="image/*" (change)="readUrl($event)" class="form-control shadow-sm rounded-pill" id="inputGroupFile01">
+          </div>
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <div class="col-12 text-center mt-4">
+        <button mat-raised-button color="primary" (click)="update()"
+          [disabled]="postForm.invalid" class="btn-save shadow-sm rounded-pill px-5 py-2">
+          <i class="fas fa-save me-2"></i>Lưu thay đổi
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<button mat-raised-button (click)="open(content)" class="btn-edit shadow-sm rounded-pill px-4">
+  <i class="fas fa-edit me-2"></i>Chỉnh sửa
+</button>

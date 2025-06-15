@@ -1,0 +1,582 @@
+<!-- Main Container -->
+<div class="main-container">
+  <!-- Hero Banner Section -->
+  <section class="hero-banner luxury-banner mb-5">
+    <div class="luxury-banner-content d-flex flex-column flex-md-row align-items-center justify-content-between">
+      <div class="luxury-banner-text text-center text-md-start mb-4 mb-md-0">
+        <h1 class="luxury-title mb-3">
+          <span class="luxury-title-highlight">Laptop</span> Đẳng Cấp, <br>
+          <span class="luxury-title-highlight">Công Nghệ</span> Dẫn Đầu
+        </h1>
+        <p class="luxury-subtitle mb-4">
+          Khám phá thế giới laptop chính hãng, giá tốt, bảo hành uy tín.<br>
+          Ưu đãi cực sốc chỉ có tại <b>Nhi Computer</b>!
+        </p>
+        <a routerLink="/products" class="btn luxury-btn px-4 py-2">
+          <i class="fas fa-shopping-cart me-2"></i> Mua Ngay
+        </a>
+      </div>
+      <div class="luxury-banner-slider position-relative">
+        <div class="luxury-slider-wrapper">
+          <img *ngFor="let img of bannerImages; let i = index"
+               [src]="img"
+               [class.active]="i === currentSlide"
+               class="luxury-banner-img"
+               alt="Banner {{i+1}}">
+        </div>
+        <button class="luxury-slider-control prev" (click)="prevSlide()">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="luxury-slider-control next" (click)="nextSlide()">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+        <div class="luxury-slider-dots">
+          <span *ngFor="let img of bannerImages; let i = index"
+                class="dot"
+                [class.active]="i === currentSlide"
+                (click)="goToSlide(i)"
+                tabindex="0"
+                (keydown.enter)="goToSlide(i)"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Best Selling Products Section -->
+  <div class="best-selling-wrapper my-4">
+    <section class="best-selling-section">
+      <div class="section-header">
+        <h2>
+          <i class="fa fa-fire text-danger me-2"></i>
+          <span class="section-title-highlight">Sản Phẩm Bán Chạy</span>
+        </h2>
+        <p>Những sản phẩm được khách hàng ưa chuộng nhất</p>
+      </div>
+
+      <!-- Danh sách sản phẩm -->
+      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" *ngIf="!isLoadingBestSellers">
+        <!-- Card sản phẩm đẹp, hiện đại -->
+        <div class="col mb-5" *ngFor="let product of bestSellers">
+          <div class="card product-card-modern h-100 shadow-lg border-0 position-relative">
+            <div class="badge-sale-modern animate__animated animate__bounceIn" *ngIf="product.discount > 0">
+               <i class="fa fa-bolt me-1"></i>-{{ product.discount }}%
+            </div>
+            <div class="product-img-container-modern d-flex align-items-center justify-content-center">
+              <img class="product-img-modern" [src]="product.image" [routerLink]="['/item-detail/'+product.productId]" alt="{{product.name}}" />
+            </div>
+            <div class="card-body text-center p-3">
+              <a class="product-name-modern" (click)="viewProduct(product.productId)">{{ product.name }}</a>
+              <div class="d-flex justify-content-center small text-warning mb-2 mt-1">
+                <ngb-rating [rate]="getStar(product.productId)" [readonly]="true" [max]="5"></ngb-rating>
+              </div>
+              <div class="price-modern mt-2">
+                <span class="old-price-modern" *ngIf="product.discount > 0">{{ product.price | currency:'VND' }}</span>
+                <span class="discount-price-modern">{{ product.price * (1 - product.discount / 100) | currency:'VND' }}</span>
+              </div>
+            </div>
+            <div class="card-footer bg-transparent text-center p-0 border-0">
+              <button class="btn btn-buy-modern w-100" (click)="addCart(product.productId, product.price * (1 - product.discount / 100))">
+                <i class="bi bi-cart-plus me-2"></i>Thêm vào giỏ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading spinner -->
+      <div class="loading-spinner" *ngIf="isLoadingBestSellers">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Nút xem tất cả sản phẩm -->
+      <div class="text-center mt-4" *ngIf="!isLoadingBestSellers && bestSellers.length > 0">
+        <button class="btn btn-outline-primary" [routerLink]="['/products']">
+          Xem tất cả sản phẩm
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Sản phẩm theo danh mục -->
+  <div class="category-products-wrapper my-4" *ngFor="let sub of subcategories">
+    <section class="category-products-section">
+      <div class="section-header category-header d-flex align-items-center mb-4">
+        <span class="category-icon-glow me-3">
+          <i class="fa fa-laptop-code"></i>
+        </span>
+        <h2 class="mb-0 flex-grow-1 d-flex align-items-center">
+          <span class="category-title-highlight-2">{{ sub.name }}</span>
+          <span class="category-title-icon ms-2 d-none d-md-inline">
+            <i class="fa fa-star"></i>
+          </span>
+        </h2>
+        <span class="category-price-filter ms-4 d-flex align-items-center">
+          <i class="fa fa-tags text-danger me-2"></i>
+          <span class="d-none d-md-inline">Ưu đãi</span>
+        </span>
+      </div>
+      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+           *ngIf="productsBySubcategory && productsBySubcategory[sub.subcategoryId] && productsBySubcategory[sub.subcategoryId].length > 0; else noProducts">
+        <div class="col mb-5"
+             *ngFor="let product of productsBySubcategory[sub.subcategoryId] | slice:0:8">
+          <div class="card product-card-modern h-100 shadow-lg border-0 position-relative">
+            <div class="badge-sale-modern animate__animated animate__bounceIn" *ngIf="product.discount > 0">
+               <i class="fa fa-bolt me-1"></i>-{{ product.discount }}%
+            </div>
+            <div class="product-img-container-modern d-flex align-items-center justify-content-center">
+              <img class="product-img-modern" [src]="product.image" [routerLink]="['/item-detail/'+product.productId]" alt="{{product.name}}" />
+            </div>
+            <div class="card-body text-center p-3">
+              <a class="product-name-modern" (click)="viewProduct(product.productId)">{{ product.name }}</a>
+              <div class="d-flex justify-content-center small text-warning mb-2 mt-1">
+                <ngb-rating [rate]="getStar(product.productId)" [readonly]="true" [max]="5"></ngb-rating>
+              </div>
+              <div class="price-modern mt-2">
+                <span class="old-price-modern" *ngIf="product.discount > 0">{{ product.price | currency:'VND' }}</span>
+                <span class="discount-price-modern">{{ product.price * (1 - product.discount / 100) | currency:'VND' }}</span>
+              </div>
+            </div>
+            <div class="card-footer bg-transparent text-center p-0 border-0">
+              <button class="btn btn-buy-modern w-100" (click)="addCart(product.productId, product.price * (1 - product.discount / 100))">
+                <i class="bi bi-cart-plus me-2"></i>Thêm vào giỏ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noProducts>
+        <p class="text-center text-muted">Không có sản phẩm nào trong loại "{{ sub.name }}".</p>
+      </ng-template>
+      <div class="text-center mt-3"
+           *ngIf="productsBySubcategory[sub.subcategoryId] && productsBySubcategory[sub.subcategoryId].length > 8">
+        <button class="btn btn-outline-primary"
+                [routerLink]="['/products']"
+                [queryParams]="{ subcategoryId: sub.subcategoryId }">
+          Xem thêm sản phẩm
+        </button>
+      </div>
+    </section>
+  </div>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+  <!-- Hoặc sử dụng Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Promotions Section -->
+  <div class="promotions-wrapper my-4">
+    <section class="promotions-section">
+      <div class="section-header">
+        <h2>
+          <i class="fa fa-gift text-warning me-2"></i>
+          <span class="section-title-highlight">Khuyến Mãi Hấp Dẫn</span>
+        </h2>
+        <p>Ưu đãi đặc biệt dành riêng cho bạn</p>
+      </div>
+      <div class="promotions-grid">
+        <div class="promo-card" *ngFor="let promo of promos">
+          <div class="promo-image">
+            <img [src]="promo.image" [alt]="promo.title">
+          </div>
+          <div class="promo-info">
+            <h3>{{promo.title}}</h3>
+            <p>{{promo.description}}</p>
+            <span class="promo-date">Kết thúc: {{promo.endDate}}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- News Section -->
+  <div class="news-wrapper my-4">
+    <section class="news-section">
+      <div class="section-header">
+        <h2>
+          <i class="fa fa-newspaper text-primary me-2"></i>
+          <span class="section-title-highlight">Tin Tức Công Nghệ</span>
+        </h2>
+        <p>Cập nhật những thông tin mới nhất về công nghệ</p>
+      </div>
+      <div class="news-grid">
+        <div class="news-card" *ngFor="let news of newsList">
+          <div class="news-image">
+            <img [src]="news.image" [alt]="news.title">
+          </div>
+          <div class="news-info">
+            <span class="news-date">{{ news.date }}</span>
+            <h3>{{ news.title }}</h3>
+            <p>{{ news.excerpt }}</p>
+            <a [href]="news.url" target="_blank" rel="noopener noreferrer" class="read-more">Đọc thêm</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+<!-- Chatbot -->
+<div class="chatbot-container" [class.active]="isChatOpen">
+  <button class="chatbot-button" (click)="toggleChat()">
+    <i class="bi bi-chat-dots"></i>
+  </button>
+  <div class="chat-window" *ngIf="isChatOpen">
+    <div class="chat-header">
+      <span class="chatbot-avatar">
+        <img src="assets/bot-cute.png" alt="Bot" />
+      </span>
+      <h3 class="mb-0">Nhi Bot</h3>
+      <button class="close-chat" (click)="toggleChat()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <!-- Quick reply buttons -->
+    <div class="quick-reply-list">
+      <button class="quick-reply-btn" *ngFor="let q of quickReplies" (click)="quickReply(q)">
+        {{q.label}}
+      </button>
+    </div>
+    <div class="messages-container" #messageContainer>
+      <div *ngFor="let message of messages"
+           [ngClass]="{'message': true, 'user-message': message.type === 'user', 'bot-message': message.type === 'bot'}">
+        <ng-container *ngIf="message.type === 'bot'">
+          <span class="avatar avatar-bot">
+            <img src="assets/bot-cute.png" alt="Bot" />
+          </span>
+        </ng-container>
+        <ng-container *ngIf="message.type === 'user'">
+          <span class="avatar avatar-user">
+            <i class="fa fa-user"></i>
+          </span>
+        </ng-container>
+        <div class="message-content">
+          {{ message.content }}
+        </div>
+        <div class="message-time" *ngIf="message.timestamp">
+          {{ message.timestamp | date:'HH:mm' }}
+        </div>
+      </div>
+      <div *ngIf="isLoading" class="bot-message loading">
+        <span class="avatar avatar-bot">
+          <img src="assets/bot-cute.png" alt="Bot" />
+        </span>
+        <div class="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+    <form (ngSubmit)="sendMessage()" class="chat-input">
+      <input type="text"
+             [(ngModel)]="newMessage"
+             name="newMessage"
+             [disabled]="isLoading"
+             placeholder="Nhập tin nhắn của bạn...">
+      <button class="send-btn-cute"
+              type="submit"
+              [disabled]="!newMessage.trim() || isLoading">
+        <i class="bi bi-send"></i>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Star rating template -->
+<ng-template #t let-fill="fill">
+  <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
+    <span class="half" [style.width.%]="fill">
+      <i class="fa fa-star"></i>
+    </span>
+    <i class="fa fa-star"></i>
+  </span>
+</ng-template>
+
+<!-- Nút lên đầu trang -->
+<button class="back-to-top" title="Lên đầu trang"
+        [class.show]="showBackToTop"
+        (click)="scrollToTop()">
+  <i class="fa fa-arrow-up"></i>
+</button>
+
+<!-- Zalo Floating Button -->
+<a href="https://zalo.me/0344134596" target="_blank" class="zalo-float-btn" title="Chat Zalo với shop">
+  <img src="https://stc-zaloprofile.zdn.vn/pc/v1/images/zalo_sharelogo.png" alt="Zalo" style="width:48px; height:48px;">
+</a>
+
+<style>
+/* Chatbot dễ thương */
+.chatbot-button {
+  background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 62px;
+  height: 62px;
+  font-size: 2.2rem;
+  box-shadow: 0 4px 24px #ffd70055;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chatbot-button:hover {
+  background: linear-gradient(135deg, #ffb300 0%, #ffd700 100%);
+  color: #fff;
+  box-shadow: 0 8px 32px #ffd70088;
+}
+
+.chat-window {
+  border-radius: 24px;
+  box-shadow: 0 8px 32px #ffd70033, 0 1px 6px #ffd70022;
+  overflow: hidden;
+  background: #fffbe6;
+  border: 2.5px solid #ffd70055;
+  animation: chatbot-fade-in 0.3s;
+}
+
+.chat-header {
+  background: linear-gradient(90deg, #ffd700 0%, #ffb300 100%);
+  color: #1e3c72;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  border-bottom: 2px solid #fffbe6;
+  position: relative;
+}
+.chatbot-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  border: 2px solid #fffbe6;
+  box-shadow: 0 2px 8px #ffd70033;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chatbot-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.close-chat {
+  background: none;
+  border: none;
+  color: #1e3c72;
+  font-size: 1.3rem;
+  cursor: pointer;
+  position: absolute;
+  right: 12px;
+  top: 14px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.close-chat:hover {
+  opacity: 1;
+}
+
+.messages-container {
+  padding: 16px 10px 10px 10px;
+  height: 260px;
+  overflow-y: auto;
+  background: #fffbe6;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 6px;
+  max-width: 90%;
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px #ffd70033;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.avatar-bot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.avatar-user {
+  background: #ffd700;
+  color: #fff;
+}
+.avatar-user i {
+  font-size: 1.2rem;
+}
+
+.user-message {
+  align-self: flex-end;
+  background: linear-gradient(90deg, #ffd700 0%, #ffb300 100%);
+  color: #1e3c72;
+  border-radius: 18px 18px 4px 18px;
+  padding: 10px 16px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px #ffd70022;
+  margin-left: auto;
+  margin-right: 0;
+  flex-direction: row-reverse;
+}
+.bot-message {
+  align-self: flex-start;
+  background: #fff;
+  color: #1e3c72;
+  border-radius: 18px 18px 18px 4px;
+  padding: 10px 16px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px #ffd70022;
+  margin-right: auto;
+  margin-left: 0;
+}
+.message-content {
+  max-width: 220px;
+  word-break: break-word;
+  font-size: 1.05rem;
+  background: none;
+}
+
+.message-time {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 2px;
+  align-self: flex-end;
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 8px;
+}
+.typing-indicator span {
+  display: block;
+  width: 7px; height: 7px;
+  background: #ffd700;
+  border-radius: 50%;
+  animation: blink 1.2s infinite both;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s;}
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s;}
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.2;}
+  40% { opacity: 1;}
+}
+
+.chat-input {
+  display: flex;
+  border-top: 1.5px solid #ffe082;
+  background: #fffbe6;
+  padding: 10px 12px;
+  gap: 8px;
+}
+.chat-input input[type="text"] {
+  flex: 1;
+  border: none;
+  border-radius: 16px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  background: #fff;
+  outline: none;
+  transition: background 0.18s;
+  box-shadow: 0 1px 4px #ffd70022;
+}
+.chat-input input[type="text"]:focus {
+  background: #fffde7;
+}
+.send-btn-cute {
+  background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px #ffd70033;
+  transition: background 0.18s, box-shadow 0.18s;
+}
+.send-btn-cute:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.send-btn-cute:hover {
+  background: linear-gradient(135deg, #ffb300 0%, #ffd700 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px #ffd70055;
+}
+
+/* Nút lên đầu trang */
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1000;
+  background: #ffd700;
+  color: #1e3c72;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px #ffd70033;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  opacity: 0;
+  pointer-events: none;
+}
+.back-to-top.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background: #ffb300;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px #ffd70055;
+}
+
+/* Zalo Floating Button */
+.zalo-float-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 100px; /* Để không đè lên chatbot, có thể chỉnh lại nếu cần */
+  z-index: 1100;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px #e9456022;
+  padding: 6px;
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.zalo-float-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 4px 16px #ffd70044;
+}
+@media (max-width: 575px) {
+  .zalo-float-btn {
+    right: 68px;
+    bottom: 12px;
+  }
+}
+</style>

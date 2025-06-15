@@ -1,0 +1,148 @@
+<div class="row">
+  <!-- Sidebar -->
+  <div class="col-2 p-0" style="min-height: 795px;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 100%; height: 100%;">
+      <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-4">Nhi Computer</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link" aria-current="page">
+            <i class="bi bi-house-door"></i>
+            Trang chủ
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/orders']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-receipt-cutoff"></i>
+            Đơn hàng
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/categories']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-tags"></i>
+            Nhãn hàng
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/products']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-display"></i>
+            Sản phẩm
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/subcategories']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-display"></i>
+            Loại sản phẩm
+          </a>
+        <li>
+          <a [routerLink]="['/users']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-people-fill"></i>
+            Người dùng
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/rates']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-list-stars"></i>
+            Bình luận & đánh giá
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/statistical']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-reception-4"></i>
+            Doanh thu
+          </a>
+        </li>
+        <li>
+  <a [routerLink]="['/feedback']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+    <i class="bi bi-chat-dots-fill"></i>
+    Góp ý
+  </a>
+</li>
+      </ul>
+      <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+           id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          <img [src]="image" alt="" width="32" height="32" class="rounded-circle me-2">
+          <strong>Account</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark bg-dark text-small shadow" aria-labelledby="dropdownUser1">
+          <li><app-edit-profile (editFinish)="finish()"></app-edit-profile></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" style="cursor: pointer;" (click)="logout()">Đăng xuất</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+    <div class="col-9 p-0 mt-4" style="margin-left: 5%;">
+    <div class="col">
+        <h2 style="font-size: 30px; font-family: 'Inter', sans-serif; font-weight: 700; color: #1e3a8a; background: linear-gradient(90deg, #1e3a8a, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 24px;">
+            Quản lý đơn hàng
+        </h2>
+        <div class="m-2" *ngIf="isLoading">
+            <div class="spinner-container">
+                <div class="spinner-gradient"></div>
+            </div>
+        </div>
+        <div class="m-2">
+            <mat-form-field appearance="fill" class="search-field">
+                <mat-label>Tìm kiếm đơn hàng</mat-label>
+                <input matInput type="text" (keyup)="search($event)" placeholder="Nhập mã đơn hoặc tên khách hàng" />
+                <mat-icon matSuffix class="search-icon">search</mat-icon>
+            </mat-form-field>
+            <div class="table-container">
+                <table mat-table [dataSource]="listData" matSort class="order-table">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Mã HĐ</th>
+                        <td mat-cell *matCellDef="let row">{{row.id}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="user">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Khách hàng</th>
+                        <td mat-cell *matCellDef="let row">{{row.user.name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="address">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Địa chỉ</th>
+                        <td mat-cell *matCellDef="let row">{{row.address}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="phone">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>SĐT</th>
+                        <td mat-cell *matCellDef="let row">{{row.phone}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tổng tiền</th>
+                        <td mat-cell *matCellDef="let row">{{row.amount|currency:'VND'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="orderDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ngày đặt</th>
+                        <td mat-cell *matCellDef="let row">{{row.orderDate|date:'dd-MM-yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Trạng thái</th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="status-badge" [ngClass]="{
+                                'status-cancelled': row.status == 0,
+                                'status-pending': row.status == 1,
+                                'status-shipping': row.status == 2,
+                                'status-delivered': row.status == 3,
+                                'status-refunding': row.status == 4
+                            }">
+                                {{row.status==0?"Đã huỷ":row.status==1?"Chờ xác nhận":row.status==2?"Đang giao hàng":row.status==3?"Đã giao":"Chờ duyệt hủy"}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="view">
+                        <th mat-header-cell *matHeaderCellDef>Kiểm tra</th>
+                        <td mat-cell *matCellDef="let row">
+                            <app-order-action [orderId]="row.id" (updateFinish)="finish()" class="action-button"></app-order-action>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columns;" class="table-row"></tr>
+                </table>
+            </div>
+            <mat-paginator [length]="orderLength" [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]" class="paginator"></mat-paginator>
+        </div>
+    </div>
+</div>

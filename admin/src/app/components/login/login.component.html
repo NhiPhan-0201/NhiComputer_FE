@@ -1,0 +1,58 @@
+<div class="login-container">
+  <div class="login-box">
+    <div class="login-header">
+      <h2>ĐĂNG NHẬP</h2>
+      <p>Chào mừng trở lại! Vui lòng đăng nhập vào tài khoản của bạn</p>
+    </div>
+    <form [formGroup]="postForm" class="login-form">
+      <div class="form-group">
+        <label for="username">Tên đăng nhập</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          [ngClass]="{'is-invalid': postForm.get('username')?.touched && postForm.get('username')?.invalid}"
+          placeholder="Nhập tên đăng nhập"
+        >
+        <small class="error-message" *ngIf="postForm.get('username')?.invalid && postForm.get('username')?.touched">
+          Vui lòng nhập tên đăng nhập
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mật khẩu</label>
+        <div class="password-input">
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            [type]="show ? 'text' : 'password'"
+            [ngClass]="{'is-invalid': postForm.get('password')?.touched && postForm.get('password')?.invalid}"
+            placeholder="Nhập mật khẩu"
+          >
+          <button type="button" class="toggle-password" (click)="password()">
+            <i class="fas" [ngClass]="{'fa-eye': !show, 'fa-eye-slash': show}"></i>
+          </button>
+        </div>
+        <small class="error-message" *ngIf="postForm.get('password')?.invalid && postForm.get('password')?.touched">
+          Vui lòng nhập mật khẩu
+        </small>
+      </div>
+
+      <div class="form-options">
+        <div class="remember-me">
+          <input type="checkbox" id="showPassword" (click)="password()">
+          <label for="showPassword">{{!show ? 'Hiển thị mật khẩu' : 'Ẩn mật khẩu'}}</label>
+        </div>
+      </div>
+
+      <button
+        class="login-button"
+        [disabled]="postForm.invalid"
+        (click)="Login()"
+      >
+        ĐĂNG NHẬP
+      </button>
+    </form>
+  </div>
+</div>

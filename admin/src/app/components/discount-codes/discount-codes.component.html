@@ -1,0 +1,192 @@
+<div class="row">
+  <!-- Sidebar -->
+  <div class="col-2 p-0" style="min-height: 795px;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 100%; height: 100%;">
+      <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-4">Nhi Computer</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link" aria-current="page">
+            <i class="bi bi-house-door"></i>
+            Trang chủ
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/orders']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-receipt-cutoff"></i>
+            Đơn hàng
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/categories']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-tags"></i>
+            Nhãn hàng
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/products']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-display"></i>
+            Sản phẩm
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/subcategories']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-display"></i>
+            Loại sản phẩm
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/users']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-people-fill"></i>
+            Người dùng
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/rates']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-list-stars"></i>
+            Bình luận & đánh giá
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/statistical']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-reception-4"></i>
+            Doanh thu
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/discount-codes']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-ticket-perforated"></i>
+            Mã giảm giá
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/feedback']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-chat-dots-fill"></i>
+            Góp ý
+          </a>
+        </li>
+      </ul>
+      <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+           id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          <img [src]="image" alt="" width="32" height="32" class="rounded-circle me-2">
+          <strong>Account</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark bg-dark text-small shadow" aria-labelledby="dropdownUser1">
+          <li><app-edit-profile (editFinish)="finish()"></app-edit-profile></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" style="cursor: pointer;" (click)="logout()">Đăng xuất</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Main content -->
+  <div class="col-10 p-4 luxury-bg">
+    <h2 class="section-title mb-4">
+      <i class="bi bi-ticket-perforated me-2"></i>Quản lý mã giảm giá
+    </h2>
+    <button class="btn btn-primary mb-3" (click)="addNew()">
+      <i class="bi bi-plus-circle me-1"></i>Thêm mã mới
+    </button>
+    <div class="table-container">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Mã</th>
+            <th>Mô tả</th>
+            <th>Loại</th>
+            <th>Giá trị</th>
+            <th>Số lượt tối đa</th>
+            <th>Đã dùng</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>Đơn tối thiểu</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let code of codes">
+            <td>{{code.code}}</td>
+            <td>{{code.description}}</td>
+            <td>{{code.discountType === 'percent' ? '%' : 'VNĐ'}}</td>
+            <td>{{code.discountValue}}{{code.discountType === 'percent' ? '%' : '₫'}}</td>
+            <td>{{code.maxUses}}</td>
+            <td>{{code.usedCount}}</td>
+            <td>{{code.startDate | date:'shortDate'}}</td>
+            <td>{{code.endDate | date:'shortDate'}}</td>
+            <td>{{code.minOrderValue | number}}₫</td>
+            <td>
+              <span class="badge bg-success" *ngIf="code.status">Hoạt động</span>
+              <span class="badge bg-secondary" *ngIf="!code.status">Ẩn</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-warning me-1" (click)="edit(code)">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="delete(code.id)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Form thêm/sửa -->
+    <div *ngIf="isEdit" class="card p-3 mt-3">
+      <h4>{{selected.id ? 'Sửa' : 'Thêm'}} mã giảm giá</h4>
+      <form (ngSubmit)="save()">
+        <div class="row">
+          <div class="col-md-4 mb-2">
+            <label>Mã</label>
+            <input class="form-control" [(ngModel)]="selected.code" name="code" required>
+          </div>
+          <div class="col-md-4 mb-2">
+            <label>Mô tả</label>
+            <input class="form-control" [(ngModel)]="selected.description" name="description">
+          </div>
+          <div class="col-md-2 mb-2">
+            <label>Loại</label>
+            <select class="form-control" [(ngModel)]="selected.discountType" name="discountType">
+              <option value="percent">%</option>
+              <option value="amount">VNĐ</option>
+            </select>
+          </div>
+          <div class="col-md-2 mb-2">
+            <label>Giá trị</label>
+            <input type="number" class="form-control" [(ngModel)]="selected.discountValue" name="discountValue" required>
+          </div>
+          <div class="col-md-2 mb-2">
+            <label>Số lượt tối đa</label>
+            <input type="number" class="form-control" [(ngModel)]="selected.maxUses" name="maxUses">
+          </div>
+          <div class="col-md-2 mb-2">
+            <label>Ngày bắt đầu</label>
+            <input type="date" class="form-control" [(ngModel)]="selected.startDate" name="startDate">
+          </div>
+          <div class="col-md-2 mb-2">
+            <label>Ngày kết thúc</label>
+            <input type="date" class="form-control" [(ngModel)]="selected.endDate" name="endDate">
+          </div>
+          <div class="col-md-2 mb-2">
+            <label>Đơn tối thiểu</label>
+            <input type="number" class="form-control" [(ngModel)]="selected.minOrderValue" name="minOrderValue">
+          </div>
+          <div class="col-md-2 mb-2">
+            <label>Trạng thái</label>
+            <select class="form-control" [(ngModel)]="selected.status" name="status">
+              <option [ngValue]="true">Hoạt động</option>
+              <option [ngValue]="false">Ẩn</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-success mt-2" type="submit">Lưu</button>
+        <button class="btn btn-secondary mt-2 ms-2" type="button" (click)="cancel()">Hủy</button>
+      </form>
+    </div>
+  </div>
+</div>

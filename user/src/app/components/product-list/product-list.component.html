@@ -1,0 +1,117 @@
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <div class="filter-bar-new d-flex flex-wrap align-items-center gap-3 mb-4 p-3 rounded shadow-sm bg-white">
+      <!-- Tìm kiếm -->
+      <div class="flex-grow-1">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="fa fa-search text-primary"></i>
+          </span>
+          <input type="text" class="form-control border-start-0" placeholder="Tìm kiếm sản phẩm..." (keyup)="search($event)">
+        </div>
+      </div>
+      <!-- Loại sản phẩm -->
+      <div>
+        <select class="form-select" [(ngModel)]="selectedSubcategory" (change)="filterBySubcategory(selectedSubcategory)">
+          <option value="">Tất cả loại sản phẩm</option>
+          <option *ngFor="let sub of subcategories" [value]="sub.subcategoryId">{{ sub.name }}</option>
+        </select>
+      </div>
+      <!-- Sắp xếp -->
+      <div>
+        <select class="form-select" [(ngModel)]="keyF" (change)="sort(keyF)">
+          <option value=''>Sắp xếp</option>
+          <option value='enteredDate'>Mới nhất</option>
+          <option value='priceDesc'>Giá giảm dần</option>
+          <option value='priceAsc'>Giá tăng dần</option>
+        </select>
+      </div>
+      <!-- Giá -->
+      <div>
+        <select class="form-select" [(ngModel)]="priceRange" (change)="filterByPrice(priceRange)">
+          <option value=''>Tất cả giá</option>
+          <option value='10-15'>10-15 triệu</option>
+          <option value='15-20'>15-20 triệu</option>
+          <option value='20+'>Trên 20 triệu</option>
+        </select>
+      </div>
+      <!-- Nút reset -->
+      <div>
+        <button class="btn btn-outline-primary" (click)="resetFilter()">
+          <i class="fa fa-refresh me-1"></i> Đặt lại
+        </button>
+      </div>
+    </div>
+
+    <!-- Không có sản phẩm -->
+    <div class="row" *ngIf="totalLength==0">
+      <h1 class="text-center no-products">Không tìm thấy sản phẩm phù hợp!</h1>
+    </div>
+
+    <!-- Đang tải -->
+    <div class="row" *ngIf="isLoading">
+      <div class="loading-container">
+        <output class="spinner-border"></output>
+      </div>
+    </div>
+
+    <!-- Hiển thị sản phẩm -->
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" *ngIf="!isLoading && totalLength!=0">
+      <div class="col mb-5" *ngFor="let item of products | orderBy: key : reverse | paginate: { itemsPerPage: 12, currentPage: page }">
+        <div class="card product-card h-100">
+          <!-- Sale badge -->
+          <div class="badge-sale" *ngIf="item.discount > 0">
+              <i class="fa fa-bolt me-1"></i> -{{ item.discount }}%
+          </div>
+          <!-- Ảnh sản phẩm -->
+          <div class="product-img-container">
+            <img class="card-img-top product-img" [src]="item.image" [routerLink]="['/item-detail/'+item.productId]" [alt]="item.name" />
+          </div>
+
+          <!-- Thông tin sản phẩm -->
+          <div class="card-body text-center p-4">
+            <a class="product-name" [routerLink]="['/item-detail/'+item.productId]">{{ item.name }}</a>
+            <!-- Star rating -->
+            <div class="d-flex justify-content-center small text-warning mb-2">
+              <ngb-rating [rate]="getStar(item.productId)" [readonly]="true" [max]="5"></ngb-rating>
+            </div>
+            <!-- Giá -->
+            <div class="price mt-2">
+              <span class="text-muted text-decoration-line-through" *ngIf="item.discount > 0">{{ item.price | currency:'VND' }}</span>
+              <b class="discount-price">{{ item.price * (1 - item.discount/100) | currency:'VND' }}</b>
+            </div>
+          </div>
+
+          <!-- Nút mua hàng -->
+          <div class="card-footer bg-transparent text-center p-4 pt-0 border-top-0">
+            <button class="btn btn-buy" (click)="addCart(item.productId, item.price * (1 - item.discount/100))">
+              Thêm vào giỏ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-controls">
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+  </div>
+</section>
+
+<!-- Nút lên đầu trang -->
+<button class="back-to-top" title="Lên đầu trang"
+        [class.show]="showBackToTop"
+        (click)="scrollToTop()">
+  <i class="fa fa-arrow-up"></i>
+</button>
+
+<!-- Star rating template -->
+<ng-template #t let-fill="fill">
+  <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
+    <span class="half" [style.width.%]="fill">
+      <i class="fa fa-star"></i>
+    </span>
+    <i class="fa fa-star"></i>
+  </span>
+</ng-template>

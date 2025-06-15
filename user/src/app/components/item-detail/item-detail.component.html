@@ -1,0 +1,198 @@
+<!-- Product section-->
+<section class="product-detail-section py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="row gx-5 align-items-start">
+      <!-- Ảnh sản phẩm -->
+      <div class="col-md-6">
+        <div class="product-gallery position-relative">
+          <div class="main-image mb-3 d-flex align-items-center justify-content-center" style="min-height:320px; background:#f9fafc; border-radius:16px; position:relative;">
+            <img
+              [src]="currentImage || product.image"
+              alt="{{product.name}}"
+              class="img-fluid main-product-img"
+              style="max-height:300px; max-width:100%; object-fit:contain; border-radius:14px; box-shadow:0 2px 12px #032b5d11;"
+              (error)="onImageError($event)"
+            />
+            <div class="discount-badge" *ngIf="product.discount > 0">
+              <i class="fa fa-bolt me-1"></i> -{{ product.discount | number: '1.0-0' }}%
+            </div>
+          </div>
+          <div class="thumbnail-gallery d-flex gap-2 justify-content-center mt-2">
+            <div
+              class="thumbnail"
+              *ngFor="let image of productImages"
+              [class.active]="image.imageUrl === currentImage"
+              (click)="changeMainImage(image.imageUrl)">
+              <img
+                [src]="image.imageUrl"
+                alt="Thumbnail"
+                class="img-thumbnail"
+                style="width:60px; height:60px; object-fit:contain; border-radius:8px; background:#fff;"
+                (error)="onImageError($event, true)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Thông tin sản phẩm -->
+      <div class="col-md-6">
+        <div class="product-info">
+          <h1 class="product-title mb-2">{{product?.name}}</h1>
+          <div class="rating-section mb-3 d-flex align-items-center">
+            <ngb-rating [(rate)]="rateAvg" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+            <span class="ms-2 text-muted">({{rateLength}} đánh giá)</span>
+          </div>
+          <div class="price-section mb-3 d-flex align-items-end gap-3">
+            <span class="current-price">{{product.price*(1-product.discount/100)|currency:'VND'}}</span>
+            <span class="original-price" *ngIf="product.discount > 0">{{product.price|currency:'VND'}}</span>
+            <span class="discount-badge ms-2" *ngIf="product.discount > 0">
+              <i class="fa fa-bolt me-1"></i> -{{product.discount | number:'1.0-0'}}%
+            </span>
+          </div>
+          <div class="mb-3">
+            <span class="badge bg-success" *ngIf="product.quantity > 0"><i class="fa fa-check-circle me-1"></i> Còn hàng</span>
+            <span class="badge bg-danger" *ngIf="product.quantity === 0"><i class="fa fa-times-circle me-1"></i> Hết hàng</span>
+          </div>
+          <div class="mb-3">
+            <span class="fw-bold">Hãng:</span>
+            <span class="ms-2">{{product.category.categoryName}}</span>
+          </div>
+          <div class="description mb-4">
+            <h5 class="fw-bold mb-2">Mô tả sản phẩm</h5>
+            <p class="text-muted">{{product.description}}</p>
+          </div>
+          <div class="action-buttons d-flex flex-column align-items-start gap-2 w-100">
+            <label class="quantity-label mb-1">Số Lượng</label>
+            <div class="quantity-group mb-2">
+              <button class="qty-btn" (click)="quantity > 1 ? quantity = quantity - 1 : null" [disabled]="quantity <= 1">-</button>
+              <input type="number"
+                     class="form-control qty-input"
+                     [(ngModel)]="quantity"
+                     min="1"
+                     max="5"
+                     (change)="onQuantityChange()"
+                     [value]="quantity">
+              <button class="qty-btn" (click)="quantity < 5 ? quantity = quantity + 1 : null" [disabled]="quantity >= 5">+</button>
+            </div>
+            <div class="d-flex flex-row align-items-center gap-3 w-100">
+              <button class="btn btn-danger btn-lg flex-grow-1"
+                      *ngIf="product"
+                      (click)="addCart(product.productId, product.price * (1 - product.discount / 100))"
+                      [disabled]="!product || product.quantity === 0">
+                <i class="fa fa-cart-plus me-2"></i>Thêm vào giỏ hàng
+              </button>
+              <button class="btn btn-outline-secondary btn-lg"
+                      (click)="toggleFavorite()">
+                <i class="fa" [ngClass]="isFavorite ? 'fa-heart text-danger' : 'fa-heart-o'"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Đánh giá khách hàng -->
+    <div class="reviews-section mt-5">
+      <h3 class="fw-bold mb-4"><i class="fa fa-star text-warning me-2"></i>Đánh giá sản phẩm</h3>
+      <div class="review-filter d-flex justify-content-between align-items-center mb-4">
+        <div class="rating-summary">
+          <div class="average-rating mb-2">
+            <span class="display-4 fw-bold">{{rateAvg}}</span>
+            <span class="text-muted">/5</span>
+          </div>
+          <ngb-rating [(rate)]="rateAvg" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+          <div class="text-muted">{{rateLength}} đánh giá</div>
+        </div>
+        <div class="review-sort d-flex align-items-center gap-2">
+          <label for="reviewSize" class="form-label mb-0 fw-semibold text-primary">
+            <i class="fa fa-filter me-1"></i> Hiển thị:
+          </label>
+          <select id="reviewSize" class="form-select review-size-select" [(ngModel)]="rateSize" *ngIf="rates.length>0">
+            <option value="5">5 đánh giá</option>
+            <option value="10">10 đánh giá</option>
+            <option value="25">25 đánh giá</option>
+            <option value="50">50 đánh giá</option>
+          </select>
+        </div>
+      </div>
+      <div class="reviews-list">
+        <div class="border rounded p-3 text-center" *ngIf="rateLength==0">
+          <i>Sản phẩm này chưa có đánh giá nào!</i>
+        </div>
+        <div class="reviews" *ngIf="rateLength>0">
+          <div class="review-item border rounded p-4 mb-4" *ngFor="let item of ratesI |orderBy:'rateDate':true| paginate: { itemsPerPage: rateSize, currentPage: 1 }">
+            <div class="d-flex">
+              <img [src]="item.user.image" alt="{{item.user.name}}" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+              <div class="review-content">
+                <div class="d-flex align-items-center mb-2">
+                  <span class="fw-bold me-2">{{item.user.name}}</span>
+                  <ngb-rating [(rate)]="item.star" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+                </div>
+                <p class="mb-2">{{item.comment}}</p>
+                <small class="text-muted">{{item.rateDate|date:'dd-MM-yyyy'}}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sản phẩm tương tự -->
+<section class="related-products-section py-5 bg-light">
+  <div class="container px-4 px-lg-5">
+    <h2 class="fw-bolder mb-4"><i class="fa fa-th-large text-primary me-2"></i>Sản phẩm tương tự</h2>
+    <div class="row" *ngIf="isLoading">
+      <div class="col-12 text-center">
+        <output class="spinner-border">
+          <span class="visually-hidden">Loading...</span>
+        </output>
+      </div>
+    </div>
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4" *ngIf="!isLoading">
+      <div class="col mb-5" *ngFor="let item of productsSuggest | paginate: { itemsPerPage: 4, currentPage: 1 }">
+        <div class="card product-card h-100 position-relative">
+          <div class="discount-badge" *ngIf="item.discount > 0">
+            <i class="fa fa-bolt me-1"></i> -{{ item.discount }}%
+          </div>
+          <div class="product-img-container">
+            <a [routerLink]="['/item-detail', item.productId]">
+              <img class="card-img-top product-img" [src]="item.image" alt="{{item.name}}" />
+            </a>
+          </div>
+          <div class="card-body p-4">
+            <div class="text-center">
+              <a [routerLink]="['/item-detail', item.productId]" class="product-name d-block mb-2">{{ item.name }}</a>
+              <div class="d-flex justify-content-center small text-warning mb-2">
+                <ngb-rating [rate]="getStar(item.productId)" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+              </div>
+              <div class="price-section">
+                <span class="original-price" *ngIf="item.discount > 0">{{item.price | currency:'VND'}}</span>
+                <span class="discounted-price ms-2">{{item.price * (1 - item.discount / 100) | currency:'VND'}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center">
+              <button class="btn btn-add-to-cart mt-auto" (click)="addCart(item.productId, item.price * (1 - item.discount / 100))">
+                <i class="fa fa-cart-plus me-1"></i>Thêm vào giỏ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Star Template -->
+<ng-template #t let-fill="fill">
+  <span class="star" [class.full]="fill === 100">
+    <span class="half" [style.width.%]="fill">
+      <i class="fa fa-star"></i>
+    </span>
+    <i class="fa fa-star"></i>
+  </span>
+</ng-template>
+

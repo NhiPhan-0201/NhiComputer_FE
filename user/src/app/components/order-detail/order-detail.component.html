@@ -1,0 +1,89 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="order-detail-modal">
+    <button type="button" class="btn-close" aria-label="Close" (click)="c()"></button>
+    <div class="order-info-card">
+      <div class="order-info-row">
+        <span class="order-info-label"><i class="bi bi-receipt"></i> Mã đơn:</span>
+        <span class="order-info-value">#{{order.id}}</span>
+      </div>
+      <div class="order-info-row">
+        <span class="order-info-label"><i class="bi bi-calendar-event"></i> Ngày đặt:</span>
+        <span class="order-info-value">{{ order.orderDate | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      <div class="order-info-row">
+        <span class="order-info-label"><i class="bi bi-geo-alt"></i> Địa chỉ nhận:</span>
+        <span class="order-info-value">{{ order.address }}</span>
+      </div>
+      <div class="order-info-row">
+        <span class="order-info-label"><i class="bi bi-telephone"></i> SĐT:</span>
+        <span class="order-info-value">{{ order.phone }}</span>
+      </div>
+      <div class="order-info-row">
+  <span class="order-info-label"><i class="bi bi-cash-stack"></i> Tổng tiền:</span>
+  <span class="order-total-value">
+    {{ (order.finalAmount || order.amount) | currency:'VND' }}
+    <span *ngIf="order.discountAmount && order.discountAmount > 0" class="text-success">
+      (Đã giảm: -{{ order.discountAmount | currency:'VND' }})
+    </span>
+    <span *ngIf="order.discountCode" class="badge bg-info text-dark ms-2">
+      Mã: {{ order.discountCode }}
+    </span>
+  </span>
+</div>
+      <div class="order-info-row">
+        <span class="order-info-label"><i class="bi bi-truck"></i> Trạng thái:</span>
+        <span class="order-status-value"
+          [ngClass]="{
+            'status-delivered': order.status === 3,
+            'status-shipping': order.status === 2,
+            'status-pending': order.status === 1
+          }">
+          <i class="bi"
+            [ngClass]="{
+              'bi-check-circle-fill': order.status === 3,
+              'bi-truck': order.status === 2,
+              'bi-clock-history': order.status === 1
+            }"></i>
+          {{ order.status === 3 ? 'Đã giao' : (order.status === 2 ? 'Đang giao' : 'Chờ xác nhận') }}
+        </span>
+      </div>
+    </div>
+    <div class="order-detail-body">
+      <h5 class="mb-3 mt-4">Danh sách sản phẩm</h5>
+      <table class="order-detail-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th></th>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Đánh giá</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of listOrderDetail.data; let i = index">
+            <td>{{i+1}}</td>
+            <td>
+              <img [src]="row.product.image"
+                   [alt]="row.product.name"
+                   class="order-detail-img"
+                   [routerLink]="['/item-detail/'+row.product.productId]" />
+            </td>
+            <td>
+              <div class="product-name">{{row.product.name}}</div>
+            </td>
+            <td>{{row.quantity}}</td>
+            <td class="order-detail-price">{{row.price | currency:'VND'}}</td>
+            <td [ngClass]="{disabled: order.status!=3}">
+              <app-rate [product]="row.product"></app-rate>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<a class="bi bi-eye-fill" style="cursor: pointer; color: teal;" (click)="open(content)">
+  <span class="visually-hidden">Xem chi tiết đơn hàng</span>
+</a>

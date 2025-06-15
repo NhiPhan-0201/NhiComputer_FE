@@ -1,0 +1,121 @@
+<div class="row">
+  <!-- Sidebar -->
+  <div class="col-2 p-0" style="min-height: 795px;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 100%; height: 100%;">
+      <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-4">Nhi Computer</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link" aria-current="page">
+            <i class="bi bi-house-door"></i>
+            Trang chủ
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/orders']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-receipt-cutoff"></i>
+            Đơn hàng
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/categories']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-tags"></i>
+            Nhãn hàng
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/products']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-display"></i>
+            Sản phẩm
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/subcategories']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-display"></i>
+            Loại sản phẩm
+          </a>
+        <li>
+          <a [routerLink]="['/users']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-people-fill"></i>
+            Người dùng
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/rates']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-list-stars"></i>
+            Bình luận & đánh giá
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/statistical']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-reception-4"></i>
+            Doanh thu
+          </a>
+        </li>
+        <li>
+  <a [routerLink]="['/feedback']" routerLinkActive="active" class="nav-link" [routerLinkActiveOptions]="{exact: true}">
+    <i class="bi bi-chat-dots-fill"></i>
+    Góp ý
+  </a>
+</li>
+      </ul>
+      <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+           id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          <img [src]="image" alt="" width="32" height="32" class="rounded-circle me-2">
+          <strong>Account</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark bg-dark text-small shadow" aria-labelledby="dropdownUser1">
+          <li><app-edit-profile (editFinish)="finish()"></app-edit-profile></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" style="cursor: pointer;" (click)="logout()">Đăng xuất</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Nội dung feedback -->
+  <div class="col-10 p-4">
+    <div class="feedback-content p-4">
+  <h2 class="section-title mb-4"><i class="bi bi-chat-dots-fill"></i> Danh sách góp ý</h2>
+  <div class="spinner-container" *ngIf="isLoading">
+    <output class="spinner-border"></output>
+  </div>
+  <div class="table-container" *ngIf="!isLoading">
+    <table class="feedback-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>User ID</th>
+          <th>Nội dung</th>
+          <th>Thời gian</th>
+          <th>Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fb of feedbackList; let i = index" class="table-row">
+          <td>{{i+1}}</td>
+          <td>{{fb.userId}}</td>
+          <td>{{fb.content}}</td>
+          <td>{{fb.createdAt | date:'dd-MM-yyyy HH:mm'}}</td>
+          <td>
+            <select class="status-select"
+                    [ngModel]="fb.status"
+                    (ngModelChange)="changeStatus(fb.feedbackId, $event)">
+              <option [ngValue]="false" [disabled]="fb.status">Chưa xem</option>
+              <option [ngValue]="true">Đã xem</option>
+            </select>
+            <span class="status-badge"
+                  [ngClass]="fb.status ? 'status-processed' : 'status-pending'">
+              {{fb.status ? 'Đã xem' : 'Chưa xem'}}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+  </div>
+</div>

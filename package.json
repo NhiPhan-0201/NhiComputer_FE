@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@angular/animations": "^20.0.0",
+    "@angular/cdk": "^20.0.1",
+    "@angular/cli": "^20.0.0",
+    "@angular/material": "^20.0.1",
+    "@types/chart.js": "^4.0.1",
+    "aos": "^2.3.4",
+    "chart.js": "^4.4.9",
+    "gsap": "^3.12.7",
+    "swiper": "^11.2.6"
+  }
+}

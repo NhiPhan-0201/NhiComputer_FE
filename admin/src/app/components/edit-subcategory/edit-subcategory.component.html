@@ -1,0 +1,26 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h2 class="modal-title m-0">Cập nhật loại sản phẩm</h2>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="postForm" class="row p-2">
+      <input type="hidden" formControlName="subcategoryId">
+      <div class="form-group col-12 mb-3">
+        <label for="name">Tên loại sản phẩm:</label>
+        <input type="text" name="name" id="name"
+          [ngClass]="{'is-invalid': postForm.get('name')?.touched && postForm.get('name')?.invalid}"
+          class="form-control" placeholder="Tên loại sản phẩm" formControlName="name">
+        <small *ngIf="postForm.get('name')?.invalid && postForm.get('name')?.touched" class="text-danger">
+          Tên loại sản phẩm phải ít nhất 3 ký tự
+        </small>
+      </div>
+      <button mat-raised-button color="primary" class="col-3 m-3"
+        [disabled]="postForm.invalid" (click)="update()">
+        Cập nhật
+      </button>
+    </form>
+  </div>
+</ng-template>
+<a style="color: steelblue; cursor: pointer;" (click)="open(content)">
+  <i class="bi bi-eye-fill"></i>
+</a>

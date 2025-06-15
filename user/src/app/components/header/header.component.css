@@ -1,0 +1,319 @@
+/* Font chung cho toàn bộ header */
+.custom-navbar, .navbar-nav .nav-link, .dropdown-menu .dropdown-item, .cart-button, .user-dropdown .nav-link {
+  font-family: 'Montserrat', 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+/* === Navbar tổng thể === */
+.custom-navbar {
+  background: rgba(3,43,93,0.92);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px #032b5d33, 0 2px 12px #d4af3722;
+  padding: 1.3rem 0 1.3rem 0;
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  margin-bottom: 12px;
+  transition: background 0.3s;
+}
+
+/* Tiêu đề chính "Nhi Computer" */
+.title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #ffd700 10%, #e94560 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2.5px;
+  text-shadow: 0 4px 24px #d4af3722, 0 1px 0 #fff;
+  filter: drop-shadow(0 2px 8px #d4af3722);
+  transition: transform 0.3s, text-shadow 0.3s;
+}
+/* Khi di chuột vào "Nhi Computer", chữ phóng to & đổi màu */
+.title:hover {
+  transform: scale(1.10) rotate(-2deg);
+  text-shadow: 0 8px 32px #ffd70099, 0 2px 0 #fff;
+}
+
+/* Hiệu ứng chạy chữ */
+@keyframes moveIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+/* === Logo === */
+.navbar-brand {
+  font-size: 1.5rem;
+  color: #fff !important;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+
+/* === Menu === */
+.navbar-nav .nav-link {
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 1.15rem;
+  padding: 0.7rem 1.5rem !important;
+  border-radius: 18px;
+  margin: 0 0.3rem;
+  transition: background 0.25s, color 0.25s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 1px;
+  box-shadow: none;
+}
+
+.navbar-nav .nav-link:hover, .navbar-nav .nav-link.router-link-active {
+  background: linear-gradient(90deg, #e94560 60%, #ffd700 100%);
+  color: #fff !important;
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 4px 16px #e9456022;
+}
+
+/* === Dropdown menu === */
+.dropdown-menu {
+  background: #fff;
+  border: none;
+  box-shadow: 0 12px 40px #032b5d22;
+  border-radius: 18px;
+  padding: 0.7rem 0.4rem;
+  min-width: 220px;
+}
+
+.dropdown-item {
+  color: #032b5d !important;
+  font-weight: 700;
+  border-radius: 10px;
+  transition: background 0.2s, color 0.2s;
+  padding: 0.7rem 1.3rem;
+  font-size: 1.08rem;
+}
+
+.dropdown-item:hover {
+  background: linear-gradient(90deg, #e94560 60%, #ffd700 100%);
+  color: #fff !important;
+}
+
+/* === Giỏ hàng === */
+.cart-button {
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  color: #e94560;
+  font-size: 1.7rem;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px #e9456022, 0 1.5px 8px #ffd70033;
+  position: relative;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.cart-button:hover {
+  background: linear-gradient(90deg, #ffd700 60%, #e94560 100%);
+  color: #032b5d;
+  transform: scale(1.12);
+  box-shadow: 0 8px 32px #ffd70044;
+}
+
+.cart-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(120deg, #e94560 60%, #ffd700 100%);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  font-weight: 800;
+  box-shadow: 0 2px 8px #e9456022;
+  border: 2px solid #fff;
+  z-index: 2;
+  padding: 0;
+  transition: box-shadow 0.2s;
+}
+.cart-badge::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+/* === User Icon === */
+.user-dropdown .nav-link {
+  font-size: 1.3rem;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.user-dropdown .nav-link:hover {
+  transform: scale(1.1);
+}
+
+.user-dropdown .nav-link.user-icon {
+  background: #fff;
+  color: #032b5d;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 8px #032b5d22;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.user-dropdown .nav-link.user-icon:hover {
+  background: linear-gradient(90deg, #ffd700 60%, #e94560 100%);
+  color: #fff;
+  transform: scale(1.10);
+}
+
+/* Animation for navbar items */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-item {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* === Thông báo (Notification) === */
+.notification-dropdown {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  background: #e94560;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 50%;
+  padding: 2px 7px;
+  z-index: 2;
+}
+
+.notification-menu {
+  min-width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 4px 16px #032b5d22;
+}
+
+.notification-item {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.notification-item.unread {
+  background: #fffbe6;
+  font-weight: 600;
+}
+
+.notification-item:hover {
+  background: #f3f4f6;
+}
+
+.notification-content {
+  white-space: normal;
+}
+
+.notification-time {
+  font-size: 0.92rem;
+}
+
+/* Chuông thông báo giống avatar/user */
+.notification-icon {
+  background: #fff;
+  color: #e94560;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 8px #e9456022;
+  position: relative;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  border: none;
+  outline: none;
+}
+
+.notification-icon:hover {
+  background: linear-gradient(90deg, #ffd700 60%, #e94560 100%);
+  color: #fff;
+  transform: scale(1.10);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: #e94560;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 50%;
+  padding: 2px 7px;
+  z-index: 2;
+  border: 2px solid #fff;
+  min-width: 22px;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  .custom-navbar {
+    border-radius: 0 0 18px 18px;
+    padding: 0.7rem 0;
+  }
+  .navbar-collapse {
+    background: #fff;
+    border-radius: 16px;
+    margin-top: 1rem;
+    box-shadow: 0 8px 32px #032b5d22;
+  }
+  .nav-link {
+    color: #032b5d !important;
+    font-weight: 800;
+    padding: 1.2rem 1.5rem !important;
+    border-radius: 14px;
+    font-size: 1.1rem;
+  }
+  .dropdown-menu {
+    background: #fff;
+    margin-left: 0;
+  }
+}

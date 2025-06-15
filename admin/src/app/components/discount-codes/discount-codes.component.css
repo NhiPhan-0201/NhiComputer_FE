@@ -1,0 +1,493 @@
+.dashboard-container {
+  padding: 2rem;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #1a237e 0%, #283593 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  z-index: 1000;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.brand-text {
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.sidebar-menu {
+  flex: 1;
+  padding: 24px 0;
+  overflow-y: auto;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin-bottom: 8px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.nav-link i {
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.nav-link span {
+  font-size: 15px;
+}
+
+.sidebar-footer {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.user-role {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.user-dropdown {
+  min-width: 160px;
+  display: none;
+  position: absolute;
+  bottom: 80px;
+  left: 16px;
+  right: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  transform: translateY(10px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.user-dropdown.show {
+  display: block;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  color: #2c3e50;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item i {
+  margin-right: 12px;
+  font-size: 18px;
+  color: #6c757d;
+  transition: color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: #f8f9fa;
+  color: #1a237e;
+}
+
+.dropdown-item:hover i {
+  color: #1a237e;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: #e9ecef;
+  margin: 8px 0;
+}
+
+.title-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+/* Optional Background Pattern (to mimic the wave-like pattern in the image) */
+.title-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 10%);
+  background-size: 20px 20px;
+  opacity: 0.5;
+}
+
+/* Title Styling */
+.page-title {
+  font-size: 36px;
+  font-family: 'UTM Avo', 'Arial', sans-serif; /* UTM Avo is a popular Vietnamese font for festive designs */
+  color: #020202; /* Bright yellow like the main text in the image */
+  -webkit-text-stroke: 2px #000000; /* Red outline */
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+  margin: 0;
+  text-transform: uppercase; /* Match the uppercase style */
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hover Effect for Interactivity */
+.title-wrapper:hover {
+  transform: scale(1.02); /* Slight scale-up on hover */
+  transition: transform 0.3s ease;
+}
+
+/* Ensure the rest of the previous CSS remains intact */
+.col-9 {
+  background-color: #f9f9fb;
+  min-height: 100vh;
+  padding: 30px;
+  margin-left: 5%;
+}
+.col-10, .main-content, .luxury-bg {
+  background: #fff !important;
+  min-height: 100vh;
+}
+
+/* Nếu có dùng luxury-bg ở HTML thì cũng sẽ là trắng */
+.luxury-bg {
+  background: #fff !important;
+}
+
+/* Xóa hoặc ghi đè các class luxury-table, luxury-card nếu còn dùng */
+.luxury-table-container,
+.luxury-card {
+  background: #fff !important;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  border: 1px solid #eee;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: underline;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid rgba(229, 231, 235, 0.3);
+  margin-top: 20px;
+}
+
+.table th {
+  background: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 16px;
+  text-align: left;
+}
+
+.table td {
+  padding: 16px;
+  font-size: 14px;
+  color: #1f2937;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table tbody tr:hover {
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.btn {
+  min-width: 80px;
+  border-radius: 6px;
+}
+
+.btn-danger {
+  background: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: #a71d2a;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  background: #fff;
+  padding: 24px;
+}
+
+/* Nếu dùng Angular Material Table, thêm: */
+.custom-table {
+  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.mat-header-cell, .mat-cell {
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+.mat-header-row {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+.mat-row:nth-child(even) {
+  background: #f9fafb;
+}
+
+.mat-paginator {
+  background: #fff;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Luxury background */
+.luxury-bg {
+  background: linear-gradient(120deg, #1e3c72 0%, #2a5298 100%);
+  min-height: 100vh;
+}
+
+/* Luxury title */
+.luxury-title {
+  color: #ffd700;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-shadow: 0 4px 24px #ffd70044, 0 1px 0 #fff;
+  background: linear-gradient(90deg, #ffd700 10%, #e94560 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Luxury table */
+.luxury-table-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px #1e3c7211;
+  padding: 18px 18px 8px 18px;
+  margin-bottom: 32px;
+}
+
+.luxury-table th {
+  background: #f3f4f6;
+  color: #1e3c72;
+  font-weight: 700;
+  font-size: 1.08rem;
+  padding: 14px;
+  border: none;
+}
+
+.luxury-table td {
+  padding: 13px 14px;
+  font-size: 1.04rem;
+  color: #222;
+  border: none;
+  vertical-align: middle;
+}
+
+.luxury-row {
+  transition: background 0.18s, box-shadow 0.18s;
+}
+.luxury-row:hover {
+  background: #fffbe6;
+  box-shadow: 0 2px 8px #ffd70033;
+}
+
+.badge-code {
+  background: linear-gradient(90deg, #ffd700 0%, #e94560 100%);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 6px 16px;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.badge-percent {
+  background: #e94560;
+  color: #fff;
+  border-radius: 10px;
+  padding: 4px 10px;
+  font-weight: 600;
+}
+.badge-amount {
+  background: #ffd700;
+  color: #1e3c72;
+  border-radius: 10px;
+  padding: 4px 10px;
+  font-weight: 600;
+}
+
+.text-luxury {
+  color: #e94560;
+  font-weight: 700;
+}
+
+.badge-status-active {
+  background: #ecfdf5;
+  color: #065f46;
+  border-radius: 12px;
+  padding: 5px 14px;
+  font-weight: 600;
+}
+.badge-status-inactive {
+  background: #f3f4f6;
+  color: #bfc2d1;
+  border-radius: 12px;
+  padding: 5px 14px;
+  font-weight: 600;
+}
+
+/* Luxury button */
+.btn-luxury {
+  background: linear-gradient(90deg, #ffd700 0%, #e94560 100%);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 18px;
+  border: none;
+  padding: 10px 28px;
+  font-size: 1.08rem;
+  box-shadow: 0 2px 8px #ffd70022;
+  transition: background 0.22s, transform 0.15s;
+  letter-spacing: 1px;
+}
+.btn-luxury:hover {
+  background: linear-gradient(90deg, #e94560 0%, #ffd700 100%);
+  color: #fff;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 16px #ffd70044;
+}
+
+.btn-luxury-edit {
+  background: #fffbe6;
+  color: #e94560;
+  border: 1.5px solid #ffd700;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: background 0.18s, color 0.18s;
+}
+.btn-luxury-edit:hover {
+  background: #ffd700;
+  color: #fff;
+}
+
+.btn-luxury-delete {
+  background: #e94560;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  border: none;
+  transition: background 0.18s, color 0.18s;
+}
+.btn-luxury-delete:hover {
+  background: #b71c1c;
+  color: #fff;
+}
+
+/* Luxury card (form) */
+.luxury-card {
+  border-radius: 18px;
+  box-shadow: 0 8px 32px #ffd70033;
+  background: #fffbe6;
+  border: 2.5px solid #ffd70055;
+}
+
+.luxury-form-title {
+  color: #e94560;
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+}

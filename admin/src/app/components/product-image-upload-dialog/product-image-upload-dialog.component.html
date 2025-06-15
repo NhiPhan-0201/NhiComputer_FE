@@ -1,0 +1,40 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h2 class="modal-title m-0">Tải lên hình ảnh sản phẩm</h2>
+    <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="postForm" class="row p-2">
+      <!-- Chọn sản phẩm -->
+      <div class="form-group col-12 mb-3">
+        <label for="productId">Chọn sản phẩm:</label>
+        <select class="form-select" id="productId" formControlName="productId">
+          <option [ngValue]="null">-- Chọn sản phẩm --</option>
+          <option *ngFor="let product of products" [value]="product.productId">
+            {{ product.name }} - {{ product.name }}
+          </option>
+        </select>
+        <small *ngIf="postForm.get('productId')?.invalid && postForm.get('productId')?.touched" class="text-danger">
+          Vui lòng chọn sản phẩm
+        </small>
+      </div>
+
+      <!-- Preview hình ảnh -->
+      <div class="col-12 text-center mb-3">
+        <h5>Ảnh xem trước</h5>
+        <img [src]="url || 'https://via.placeholder.com/200'" alt="Preview" class="img-thumbnail mb-2" width="200">
+        <div class="input-group">
+          <input type="file" class="form-control" accept="image/*" (change)="readUrl($event)">
+        </div>
+      </div>
+
+      <!-- Nút lưu -->
+      <div class="col-12 text-end">
+        <button mat-raised-button color="primary" [disabled]="postForm.invalid" (click)="save()">Tải lên</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Nút mở modal -->
+<button mat-raised-button color="primary" (click)="open(content)">Tải lên hình ảnh</button>

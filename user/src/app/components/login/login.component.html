@@ -1,0 +1,59 @@
+<div class="container">
+  <form [formGroup]="postForm" (ngSubmit)="Login()">
+    <label for="username">Username:</label>
+    <input type="text"
+           id="username"
+           [ngClass]="{'is-invalid': postForm.get('username')?.touched && postForm.get('username')?.invalid}"
+           formControlName="username"
+           placeholder="Email ở đây..."
+           required>
+    <small class="text-danger" *ngIf="postForm.get('username')?.touched && postForm.get('username')?.invalid">
+      Hãy nhập email
+    </small>
+
+    <label for="password">Password:</label>
+    <input [type]="show ? 'text' : 'password'"
+           id="password"
+           [ngClass]="{'is-invalid': postForm.get('password')?.touched && postForm.get('password')?.invalid}"
+           formControlName="password"
+           placeholder="Password ở đây..."
+           required>
+    <small class="text-danger" *ngIf="postForm.get('password')?.touched && postForm.get('password')?.invalid">
+      Hãy nhập mật khẩu
+    </small>
+
+    <div class="forget">
+      <label for="remember">
+        <input type="checkbox" id="remember" (click)="password()">
+        <p>{{!show ? 'Hiển thị mật khẩu' : 'Ẩn mật khẩu'}}</p>
+      </label>
+      <a [routerLink]="['/forgot-password']">Quên mật khẩu?</a>
+    </div>
+
+    <button type="submit" [disabled]="postForm.invalid">ĐĂNG NHẬP</button>
+
+    <div class="register">
+      <p>Chưa có tài khoản? <a [routerLink]="['/register']">Đăng ký</a></p>
+    </div>
+  </form>
+
+  <!-- Panda elements -->
+  <div class="ear-l"></div>
+  <div class="ear-r"></div>
+  <div class="panda-face">
+    <div class="blush-l"></div>
+    <div class="blush-r"></div>
+    <div class="eye-l">
+      <div class="eyeball-l"></div>
+    </div>
+    <div class="eye-r">
+      <div class="eyeball-r"></div>
+    </div>
+    <div class="nose"></div>
+    <div class="mouth"></div>
+  </div>
+  <div class="hand-l"></div>
+  <div class="hand-r"></div>
+  <div class="paw-l"></div>
+  <div class="paw-r"></div>
+</div>

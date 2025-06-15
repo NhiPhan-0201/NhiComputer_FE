@@ -1,0 +1,91 @@
+<!-- Header-->
+<header class="mt-3">
+  <img src="assets/banner.jpg" class="img-fluid">
+</header>
+
+<!-- Section-->
+<section class="py-3">
+  <div class="container px-4 px-lg-5 mt-5">
+      <div class="row mb-4 align-items-end filter-bar">
+          <!-- Tìm kiếm -->
+          <div class="col-md-4 mb-2 mb-md-0">
+              <div class="input-group search-group">
+                  <span class="input-group-text bg-white border-end-0">
+                      <i class="fa fa-search text-primary"></i>
+                  </span>
+                  <input type="text" class="form-control search-input"
+                         placeholder="Tìm kiếm sản phẩm..."
+                         (keyup)="search($event)">
+              </div>
+          </div>
+          <!-- Bộ lọc sắp xếp -->
+          <div class="col-md-3 mb-2 mb-md-0">
+              <select class="form-select filter-select" [(ngModel)]="keyF" (change)="sort(keyF)">
+                  <option value=''>Sắp xếp</option>
+                  <option value='enteredDate'>Mới nhất</option>
+                  <option value='priceDesc'>Giá giảm dần</option>
+                  <option value='priceAsc'>Giá tăng dần</option>
+              </select>
+          </div>
+          <!-- Bộ lọc giá -->
+          <div class="col-md-3 mb-2 mb-md-0">
+              <select class="form-select filter-select" [(ngModel)]="priceRange" (change)="filterByPrice(priceRange)">
+                  <option value=''>Tất cả giá</option>
+                  <option value='10-15'>10-15 triệu</option>
+                  <option value='15-20'>15-20 triệu</option>
+                  <option value='20+'>Trên 20 triệu</option>
+              </select>
+          </div>
+          <!-- Nút reset -->
+          <div class="col-md-2 text-end">
+              <button class="btn btn-outline-secondary btn-reset-filter" (click)="resetFilter()">
+                  <i class="fa fa-refresh me-1"></i>Đặt lại
+              </button>
+          </div>
+      </div>
+
+      <div class="row text-center" *ngIf="totalLength == 0">
+          <h1 class="no-products">Không tìm thấy sản phẩm phù hợp!</h1>
+      </div>
+
+      <div class="row" *ngIf="isLoading">
+          <div class="loading-container">
+              <output class="spinner-border"></output>
+          </div>
+      </div>
+
+      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" *ngIf="!isLoading && totalLength != 0">
+          <div class="col mb-4" *ngFor="let item of products | orderBy: key : reverse | paginate: { itemsPerPage: 15, currentPage: page }">
+              <div class="card product-card">
+                  <!-- Sale badge -->
+                  <div class="badge-sale" *ngIf="item.discount > 0">
+                      -{{ item.discount }}%
+                  </div>
+                  <!-- Ảnh sản phẩm -->
+                  <img class="card-img-top product-img" [src]="item.image" [routerLink]="['/item-detail/'+item.productId]" [alt]="item.name" />
+                  <!-- Thông tin sản phẩm -->
+                  <div class="card-body text-center">
+                      <a class="product-name" [routerLink]="['/item-detail/'+item.productId]">{{ item.name }}</a>
+                      <div class="d-flex justify-content-center small text-warning mb-2">
+                          <ngb-rating [rate]="getStar(item.productId)" [readonly]="true" [max]="5"></ngb-rating>
+                      </div>
+                      <div class="price">
+                          <span class="text-muted text-decoration-line-through" *ngIf="item.discount > 0">{{ item.price | currency:'VND' }}</span>
+                          <b class="discount-price">{{ item.price * (1 - item.discount/100) | currency:'VND' }}</b>
+                      </div>
+                  </div>
+                  <div class="card-footer bg-transparent text-center">
+                      <button class="btn btn-buy" (click)="addCart(item.productId, item.price * (1 - item.discount/100))">
+                          Thêm vào giỏ
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Pagination đẹp đồng bộ -->
+      <div class="pagination-controls">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      </div>
+  </div>
+</section>

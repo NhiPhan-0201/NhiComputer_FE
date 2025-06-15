@@ -1,0 +1,43 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="rate-modal">
+    <div class="modal-header border-0 pb-0">
+      <h2 class="modal-title p-0 w-100 text-center">Đánh giá sản phẩm</h2>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="rate-product-info text-center mb-3">
+          <img [src]="product.image" class="rate-product-img" width="80" [alt]="product.name">
+          <div class="rate-product-name">{{product.name}}</div>
+        </div>
+        <div class="mb-3">
+          <label for="comment" class="form-label fw-semibold">Bình luận:</label>
+          <textarea class="form-control" [(ngModel)]="comment" name="comment" id="comment" rows="3" placeholder="Nhập cảm nhận của bạn..."></textarea>
+        </div>
+        <div class="d-flex justify-content-center align-items-center mb-3">
+          <span class="me-2">Đánh giá:</span>
+          <div class="rating-box ms-2 position-relative">
+            <input type="radio" id="rating-5" name="rating" [(ngModel)]="star" value="5" (change)="updateRating(5)">
+            <label for="rating-5" class="fas fa-star" aria-label="5 sao"></label>
+            <input type="radio" id="rating-4" name="rating" [(ngModel)]="star" value="4" (change)="updateRating(4)">
+            <label for="rating-4" class="fas fa-star" aria-label="4 sao"></label>
+            <input type="radio" id="rating-3" name="rating" [(ngModel)]="star" value="3" (change)="updateRating(3)">
+            <label for="rating-3" class="fas fa-star" aria-label="3 sao"></label>
+            <input type="radio" id="rating-2" name="rating" [(ngModel)]="star" value="2" (change)="updateRating(2)">
+            <label for="rating-2" class="fas fa-star" aria-label="2 sao"></label>
+            <input type="radio" id="rating-1" name="rating" [(ngModel)]="star" value="1" (change)="updateRating(1)">
+            <label for="rating-1" class="fas fa-star" aria-label="1 sao"></label>
+            <div class="emojis"></div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button type="button" class="btn btn-primary btn-rate-submit" (click)="rating()">
+            <i class="bi bi-send me-1"></i>Gửi đánh giá
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+<a class="bi bi-star-fill" style="cursor: pointer; color: tomato;" (click)="open(content)">
+  <span class="visually-hidden">Đánh giá sản phẩm</span>
+</a>

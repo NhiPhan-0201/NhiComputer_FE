@@ -1,0 +1,132 @@
+.rating-box {
+  gap: 10px; /* Giảm khoảng cách giữa các ngôi sao để vừa với modal */
+  display: flex;
+  position: relative;
+  flex-direction: row-reverse;
+}
+
+.rating-box label {
+  font-size: 30px; /* Giảm kích thước ngôi sao để vừa với modal */
+  cursor: pointer;
+  color: #eeeeee3a;
+  border: 2px solid #ffd70099;   /* Viền vàng nhạt */
+  border-radius: 50%;
+  padding: 4px 6px;
+  margin: 0 2px;
+  background: #fffbe6;
+  transition: color 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 6px #ffd70022;
+}
+
+.rating-box label:hover,
+.rating-box label:hover ~ label {
+  color: #ffd700;
+  border-color: #ffd700;
+  background: #fffde7;
+}
+
+input:not(:checked) ~ label {
+  color: #eeeeee3a;
+  transition: .3s;
+}
+
+input:checked ~ label {
+  color: #ffa534;
+  animation: filling-animation .7s forwards;
+  filter: drop-shadow(0px 0px 10px #ffffff3f);
+}
+
+.emojis {
+  width: 100%;
+  height: fit-content;
+  position: absolute;
+  text-align: center;
+  bottom: -50px; /* Giảm khoảng cách để emoji không bị đẩy quá xa */
+  font-size: 30px; /* Giảm kích thước emoji */
+  color: white;
+  filter: drop-shadow(0px 0px 10px #ffffff3f);
+}
+
+#rating-1:checked ~ .emojis::after {
+  content: '😞';
+}
+
+#rating-2:checked ~ .emojis::after {
+  content: '😐';
+}
+
+#rating-3:checked ~ .emojis::after {
+  content: '🙂';
+}
+
+#rating-4:checked ~ .emojis::after {
+  content: '😃';
+}
+
+#rating-5:checked ~ .emojis::after {
+  content: '😍';
+}
+
+@keyframes filling-animation {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(0); }
+  60% { transform: scale(1.2); }
+}
+
+.rate-modal {
+  min-width: 350px;
+  max-width: 98vw;
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 32px #032b5d22;
+}
+
+.rate-product-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rate-product-img {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #e9456011;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-bottom: 0.3rem;
+}
+
+.rate-product-name {
+  font-weight: 600;
+  color: #032b5d;
+  font-size: 1.08rem;
+}
+
+.btn-rate-submit {
+  padding: 0.55rem 1.5rem;
+  font-weight: 600;
+  font-size: 1.08rem;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ffd700 0%, #e94560 100%);
+  border: none;
+  color: #fff;
+  box-shadow: 0 2px 8px #e9456011;
+  transition: all 0.18s;
+}
+
+.btn-rate-submit:hover {
+  background: linear-gradient(90deg, #e94560 0%, #ffd700 100%);
+  color: #fff;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 16px #ffd70033;
+}
+
+.rating-box input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
