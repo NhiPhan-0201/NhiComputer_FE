@@ -4,11 +4,16 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+     "build": "ng build --prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "private": true,
+
+  "engines": {
+    "node": "16.x",
+    "npm": "6.x"
+  },
   "dependencies": {
     "@angular/animations": "~12.0.5",
     "@angular/cdk": "^12.1.2",
@@ -24,6 +29,7 @@
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "aos": "^2.3.4",
     "bootstrap": "^5.0.2",
+    "gsap": "^3.13.0",
     "ngx-order-pipe": "^2.1.1",
     "ngx-pagination": "^5.1.1",
     "ngx-toastr": "^14.0.0",
